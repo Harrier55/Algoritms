@@ -7,6 +7,8 @@ package lesson3;
 //        2. Создать класс для реализации приоритетной очереди (выбрать только один из вариантов)
 //        3. описать метод проверки скобочной последовательности (см. код урока, комментарий под главным классом)
 
+import java.util.Stack;
+
 public class main {
     public static void main(String[] args) {
         System.out.println("Hello in Lesson 3");
@@ -84,4 +86,44 @@ class Deque {
             tail = size - 1;            // перемещаем указатель хвоста массива  на начало массива
         return res;
     }
+}
+
+/** ------------------  задача 3 ---------------**/
+
+class Check{
+    Stack stack = new Stack();
+
+    boolean balance = true;
+    public void checker(String str){    // на вход метода приходит строка из скобок
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '(') {       // если символ -открывающая скобка
+                stack.push(str.charAt(i));  // то добавляем ее в стек
+            } else if (str.charAt(i) == ')') {    // если символ - закрывающая скобка, то начинаем проверки
+
+                if (!stack.isEmpty()) {           // проверка, если стэк не пустой, то
+
+                    Character resultStackPop = (Character) stack.pop(); // достаем верхнее значение из стэка
+                    if ((resultStackPop.equals('(') && str.charAt(i) != ')')) { // если сочетание скобок такое - ( и )
+                        stack.pop();                                            //удаляем последнее значение из стэка
+                        balance = false;                                    // ставим флаг - не сбалансировано
+                        break;                                              // выходим из условия
+                    }
+
+                } else if (stack.isEmpty()) {            // если стэк пустой - выводим ошибку
+                    System.out.println(" такая скобка ) не может быть начальной");
+                    balance = false;
+                    break;                               // выходим из условия
+                }
+            }
+        }
+        // в итоге получится, что если условия не выполнены, то
+
+        if(balance == true){
+            System.out.println("Скобки сбалансированы");
+        }else {
+            System.out.println("Скобки не сбалансированы");
+        }
+    }
+
+
 }
