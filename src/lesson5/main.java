@@ -10,13 +10,39 @@ public class main {
         int result = Recursion.arifmetic(2, 3);
         System.out.println("результат  = " + result);
 
-        Recursion.hanoy(4, 1, 3, 2);
+//        System.out.println("Tower");
+
+//        Recursion.hanoy(4, 1, 3, 2); // ханойская башня
+
+        System.out.println("Horse");
+
+        HorseGo horseGo = new HorseGo(4);// задаем размер доски
+        horseGo.print_desk();
+
+    }
+}
+
+class HorseGo {
+    int x;
+    int y;
+    int[][] variki = {};
+
+    public HorseGo(int size){  // задаем размер доски
+        this.x = size;
+        this.y = size;
+    }
+
+    public  void print_desk(){  // печатаем доску
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                System.out.print("0 ");
+            }
+            System.out.println("");
+        }
     }
 }
 
 class Recursion {
-
-    public int counter = 0;
 
     public static int arifmetic(int number, int stepen) {  // задача 1
 
@@ -30,13 +56,17 @@ class Recursion {
 
     /**ханойская башня*/
 
-    public static void hanoy(int n, int i, int p, int v) { // где i- источник, p-приемник, v-временная
+    public static void hanoy(int size, int from, int to, int temp) { // где from- источник, to-приемник, temp-временная
 
-        if (n > 0) {
-            hanoy(n - 1, i, v, p);
-            System.out.println(i + "->" + p);
-            hanoy(n - 1, v, p, i);
+//        System.out.println("итерация");
+
+        if (size > 0) {
+            hanoy(size - 1, from, temp, to);
+            System.out.println(from + "->" + to);
+            hanoy(size - 1, temp, to, from);
         }
     }
+
+
 
 }
