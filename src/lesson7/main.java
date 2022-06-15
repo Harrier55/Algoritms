@@ -13,10 +13,15 @@ public class main {
         Graf graf = new Graf();
         initGraf(graf);
 
+
+        System.out.println("Начальный граф");
         graf.showGraf();
-        System.out.println("____________________________");
 
         graf.bfc();
+
+        System.out.println("Расчет минимального пути");
+        graf.showGraf();
+
 
     }
 
@@ -73,38 +78,44 @@ class Graf{
         }
     }
 
-    // обход в ширину
+    //Поиск минимального путь от вершины А. Симбиоз алгоритма обход в ширину на уроке с алгоритмом Дейкстры
     public void bfc(){
         vertexList[0].setVisited(true);        // говорим что вершина просмотрена
         vertexList[0].setMarkerVertex(0);       // устанавливаем маркер вершины = 0
         displayVertex(0);
         queue.add(0);
-        int newVertex;
+        int nextVertex;
 
         while (!queue.isEmpty()) {       // пока очередь не пуста крутимся по циклу
-            int v = queue.remove();     // достаем первый  элемент из очереди по принципу FIFO
+            int prevVertex = queue.remove();     // достаем первый  элемент из очереди по принципу FIFO
 
-            while ((newVertex = getVertexInMatrix(v)) != -1) {  // проходим все смежные вершины
+            while ((nextVertex = getVertexInMatrix(prevVertex)) != -1) {  // проходим все смежные вершины
 
-                // логика подсчета
-                int summ = matrix[v][newVertex];
+                vertexList[nextVertex].setVisited(true);     // говорим что вершина просмотрена
+                int weightEdge = matrix[prevVertex][nextVertex]; // вес ребра
+                int markerPrevVertex = vertexList[prevVertex].getMarkerVertex();
+                int summa = markerPrevVertex + weightEdge; // суииа маркера пред.вершины и ребра
+                int markerNextVertex = vertexList[nextVertex].getMarkerVertex(); // маркер текущей вершины
 
-                vertexList[newVertex].setVisited(true);     // говорим что вершина просмотрена
+                if (summa < markerNextVertex){              // устанавливаем значение маркера в вершине
+                    vertexList[nextVertex].setMarkerVertex(summa);
+                }
+//                displayVertex(prevVertex);
+//                displayVertex(nextVertex);
+//                System.out.println("вес ребра " + weightEdge   );
 
-                displayVertex(v);
-
-                displayVertex(newVertex);
-
-                System.out.println("вес ребра " + summ   );
-                queue.add(newVertex);
+                queue.add(nextVertex);
             }
 
+            for (int v = 0; v < vertexList.length; v++) {  // сброс флагов видимости
+                vertexList[v].setVisited(false);
+            }
         }
 
 
     }
-    // проверяем, что к проверяемой вершине есть ребро (т.е вес > 0)
-    // и вершина еще не была посещена
+
+    // проверяем, что к проверяемой вершине есть ребро (т.е вес > 0) и вершина еще не была посещена
     private int getVertexInMatrix(int v) {
         for (int i = 0; i < MAX_VERTEX_SIZE; i++) {
             if (matrix[v][i] > 0 && vertexList[i].getIsVisited() == false) {
@@ -114,7 +125,7 @@ class Graf{
         return -1;  // если вершин не нашлось, возвращаем  -1
     }
 
-    // добавить вершины в гарф
+    // добавить вершины в граф
     public void addVertex(char label) {// задание новых вершин
         vertexList[counterVertex++] = new Vertex(label);
     }
@@ -125,7 +136,7 @@ class Graf{
     }
     // отобразить вершину
     public void displayVertex(int v) {
-        System.out.println(vertexList[v].getLabel() + "  маркер  " + vertexList[v].getMarkerVertex());
+        System.out.println(vertexList[v].getLabel() + " + мин. путь  " + vertexList[v].getMarkerVertex());
     }
 
     public void showGraf(){
