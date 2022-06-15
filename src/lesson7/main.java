@@ -6,6 +6,7 @@ package lesson7;
 
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Stack;
 
 public class main {
     public static void main(String[] args) {
@@ -13,16 +14,15 @@ public class main {
         Graf graf = new Graf();
         initGraf(graf);
 
-
         System.out.println("Начальный граф");
-        graf.showGraf();
+ //       graf.showGraf();
 
         graf.bfc();
 
         System.out.println("Расчет минимального пути");
         graf.showGraf();
 
-
+        graf.way();
     }
 
     public static void initGraf(Graf graf){
@@ -78,7 +78,41 @@ class Graf{
         }
     }
 
-    //Поиск минимального путь от вершины А. Симбиоз алгоритма обход в ширину на уроке с алгоритмом Дейкстры
+    // возвращаемся в вершину А через другие вершины по минимальному пути
+    public void way() {
+        Stack<Integer> stackWay = new Stack();
+
+        int initVertexIndex = 9; // вершин, откуда пойдем
+
+
+        System.out.println("Стартовая вершина =  " + vertexList[initVertexIndex].getLabel());
+
+        while (initVertexIndex != 0) {
+
+
+            for (int i = 0; i < MAX_VERTEX_SIZE; i++) {
+                int initVertexMarker = vertexList[initVertexIndex].getMarkerVertex();
+                int weightEdge = matrix[i][initVertexIndex];
+                int vertexMarker = vertexList[i].getMarkerVertex();
+
+                if (weightEdge != 0 && (initVertexMarker - weightEdge) == vertexMarker) {
+                    stackWay.add(i);
+                    initVertexIndex = i;
+
+                    System.out.println("--------------------------");
+                    System.out.println("Вершина  " + vertexList[i].getLabel() +
+                            " Ребро = " + weightEdge + " Маркер =  " + vertexMarker);
+                }
+            }
+            System.out.println("target new  = " + vertexList[initVertexIndex].getMarkerVertex()
+                    + " для вершины " + vertexList[initVertexIndex].getLabel());
+
+        }
+    }
+
+
+
+    //Поиск минимального значения пути от вершины А. Симбиоз алгоритма обход в ширину с урока с алгоритмом Дейкстры
     public void bfc(){
         vertexList[0].setVisited(true);        // говорим что вершина просмотрена
         vertexList[0].setMarkerVertex(0);       // устанавливаем маркер вершины = 0
