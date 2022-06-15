@@ -24,8 +24,6 @@ public class main {
 
         System.out.println("Расчет минимального маршрута");
         graf.showWays();
-
-
     }
 
     public static void initGraf(Graf graf) {
