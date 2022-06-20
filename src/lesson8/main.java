@@ -25,12 +25,17 @@ public class main {
 
         System.out.println(" ");
 
-        Node searchValue = myHashMap.find(227);
-        if (searchValue != null){
-            System.out.println("для Key = "+ searchValue.key + " value = " + searchValue.value);
+        Node searchValue = myHashMap.find(80);
+        if (searchValue != null) {
+            System.out.println("для Key = " + searchValue.key + " value = " + searchValue.value);
         } else {
-            System.out.println("Значение для  ключа не найдено " );
+            System.out.println("Значение для  ключа не найдено ");
         }
+
+        System.out.println(" ");
+        myHashMap.remove(227);
+
+        myHashMap.showHashMap();
 
     }
 }
@@ -87,7 +92,28 @@ class HashMap {
         return null;
     }
 
-    //remove
+    public void remove(int key) {
+        int index = hashFunction(key);
+        Node previous = null;
+        Node current = hashTableNode[index];
+
+        System.out.println("Удаляем элемент с ключом = " + key);
+
+        while (current != null) {
+
+            if (current.key == key) {
+                if (previous != null) {
+                    previous.next = current.next;
+                } else {
+                    current = current.next;
+                }
+            }
+
+            previous = current;
+            current = current.next;
+        }
+    }
+
 
     public void showHashMap() {
         System.out.println("  ");
@@ -115,7 +141,6 @@ class HashMap {
 
 class Node {
     Node next;
-    Node tail;
     int key;
     String value;
 }
