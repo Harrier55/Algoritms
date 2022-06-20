@@ -10,20 +10,34 @@ public class main {
 
         HashMap myHashMap = new HashMap();
 
-        myHashMap.insert(20);
-        myHashMap.insert(558);
-        myHashMap.insert(12);
-        myHashMap.insert(8);
-        myHashMap.insert(22);
+        myHashMap.insert(20, "Барсик");
+        myHashMap.insert(558, "Мурзик");
+        myHashMap.insert(12, "Мишка");
+        myHashMap.insert(8, "Соня");
+        myHashMap.insert(57, "Котик");
+        myHashMap.insert(80, "Кот Бегемот");
+        myHashMap.insert(227, "Хвостик");
+        myHashMap.insert(115, "Йозель");
+        myHashMap.insert(205, "Тишка");
+        myHashMap.insert(77, "Гога");
 
         myHashMap.showHashMap();
+
+        System.out.println(" ");
+
+        Node searchValue = myHashMap.find(227);
+        if (searchValue != null){
+            System.out.println("для Key = "+ searchValue.key + " value = " + searchValue.value);
+        } else {
+            System.out.println("Значение для  ключа не найдено " );
+        }
 
     }
 }
 
 class HashMap {
     private static final int SIZETABLE = 25;
-    private static final int HASHPARAMETER = 25;
+    private static final int HASHPARAMETER = 10;
     private Node hashTableNode[];
     private Node top[];
 
@@ -39,39 +53,59 @@ class HashMap {
     }
 
     // insert
-    public void insert(int value) {
-        int index = hashFunction(value);
-        System.out.println("value = " + value + " hash = " + index);
+    public void insert(int key, String value) {
+        int index = hashFunction(key);
+        System.out.println("key = " + key + " hash = " + index);
         Node newNode = new Node();// создаем новую Ноду
 
         if (hashTableNode[index] == null) {   // если место в массиве еще не занято
             hashTableNode[index] = newNode;   //
             newNode.next = null;
+            newNode.key = key;
             newNode.value = value;
 
         } else {
             Node currentNode = hashTableNode[index]; // если место в массиве занято, то добавляем новый узел в список
             hashTableNode[index] = newNode;
+            newNode.key = key;
             newNode.next = currentNode;
             newNode.value = value;
         }
     }
 
-    public void showHashMap() {
-        for (int i = 0; i < SIZETABLE; i++) {
-            if (hashTableNode[i] != null) {
+    // find
+    public Node find(int key) {
+        int index = hashFunction(key);
+        Node current = hashTableNode[index];
 
-
-                int value = hashTableNode[i].value;
-                System.out.println("  " + value);
+        while (current != null) {
+            if (current.key == key) {
+                return current;
             }
+            current = current.next;
         }
+        return null;
     }
 
     //remove
 
-    // find
+    public void showHashMap() {
+        System.out.println("  ");
+        System.out.println(" Хэш таблица ");
 
+        for (int i = 0; i < SIZETABLE; i++) {
+            if (hashTableNode[i] != null) {
+
+                Node current = hashTableNode[i];
+
+                while (current != null) {
+                    System.out.print(" key = " + current.key + " value = " + current.value + "; ");
+                    current = current.next;
+                }
+                System.out.println("  ");
+            }
+        }
+    }
 
     private int hashFunction(int key) {
         return key % HASHPARAMETER;
@@ -82,6 +116,6 @@ class HashMap {
 class Node {
     Node next;
     Node tail;
-    int value;
     int key;
+    String value;
 }
