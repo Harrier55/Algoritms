@@ -12,6 +12,12 @@ jobs:
     steps:
     - name: Testing
       run: echo "Hello word "
+    
+    - name: Git clone my repository
+      uses: action/checkout@v1
+      
+    - name: List my repo
+      run: ls -la
    
     
     
